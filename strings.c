@@ -1,21 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 
-/*typedef struct cell
-{
-    char Campo_Chave[100];
-    int Linha;
-    cell *esquerda;
-    cell *direita;
-} No;*/
-//#ifndef Teste
-//#define Teste
-typedef struct Teste Teste;
-struct teste{
-char Chave[100];
-int linha;
-Teste *direita;
-Teste *esquerda;
+typedef struct No No;
+struct No{
+char Campo_Chave[100];
+int Linha;
+No *Direita;
+No *Esquerda;
 
 };
 
@@ -50,21 +41,22 @@ int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver
 
 
 
-/*void tree(No *A, int Line, char key[100]){
-        if(a!=null){
-            if(alfabeto(key, a->esquerda) == -1){
-                    tree(a->esquerda, line, key);
+void tree(No *A, int Line, char Key[100]){
+        if(A!=NULL){
+            if(alfabeto(Key, A->Esquerda) == 0){
+                    tree(A->Esquerda, Line, Key);
 
-            }else{tree(a->direita, Line, key);}
-        }else{
+            }else{tree(A->Direita, Line, Key);}
+        }else{    printf("estou aqui");
             A = (No*)malloc(sizeof(No));
             A -> Linha = Line;
-            A -> Campo_Chave = key;
-            A -> esquerda = NULL;
-            A -> direita = NULL;
+            printf("%d", A->Linha);
+            strcpy(A -> Campo_Chave, Key);
+            A -> Esquerda = NULL;
+            A -> Direita = NULL;
         }
 
-}*/
+}
 
 
 int main() {
@@ -75,7 +67,7 @@ int main() {
      //   printf("no such file.");
       //  return 0;
     //}
-    char country[100], region[100], sigla[10];
+    char Country[100], Region[100], Sigla[10];
   // char str1[100] = "This is ", str2[100] = "programiz.com";
 
    // concatenates str1 and str2
@@ -92,13 +84,20 @@ int main() {
 
     int a;
 
-    strcpy(country, "Brazil");
-    strcpy(region, "Belarus");
-    a = alfabeto(region, country);
+    strcpy(Country, "Brazil");
+    strcpy(Region, "Belarus");
+    a = alfabeto(Region, Country);
     printf("%d\n", a);
-    printf("%s\n", country);
-    printf("%s\n", region);
+    printf("%s\n", Country);
+    printf("%s\n", Region);
 
+    No *Teste = NULL;
+    int Linha =15;
+    tree(Teste, 15, "teste");
+    printf("saiu da function");
+    printf("%d", Teste->Linha);
+    printf("%s", Teste->Campo_Chave);
+    free(Teste);
 
    return 0;
 }
