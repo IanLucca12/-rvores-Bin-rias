@@ -14,7 +14,7 @@ FILE acessLine(FILE *fp, int line){  /* the first argument is a file pointer tha
                                         /*the second argument is the line u want to acess*/
                                         /*after using this the next fgetc(fp) will point to the first element of the line u wanted to acess*/
     char ch;                            /*see an exemple in the main*/
-    int count = 0;
+    int count = 1;
     while(count<line){
         ch = fgetc(fp);
         if(ch == 10){
@@ -22,6 +22,59 @@ FILE acessLine(FILE *fp, int line){  /* the first argument is a file pointer tha
         }
     }
     return *fp;
+}
+
+void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz, nome do arquivo, ponteiro pro começo do arquivo*/
+    int a=1;
+    int i=0;
+    FILE *fp2;
+    fp2 = fopen(nome_arquivo,"r");
+    char ch[550];
+    if (head->Esquerda==NULL && head->Direita==NULL){
+
+        a=head->Linha;
+        *fp2 = acessLine(fp, a);
+        do{
+            ch[i]=fgetc(fp2);
+            i++;
+        }while(ch[i]!=10);
+        printf("%s", ch);
+        i=0;
+        fclose(fp2);
+        }else if(head->Esquerda!=NULL){
+            PrintNo(head->Esquerda, nome_arquivo, fp);
+            a=head->Esquerda->Linha;
+            *fp2 = acessLine(fp, a);
+            do{
+            ch[i]=fgetc(fp2);
+            i++;
+        }while(ch[i]!=10);
+        printf("%s", ch);
+        i=0;
+        fclose(fp2);
+        }else if(head->Direita!=NULL){
+            a=head->Direita->Linha;
+            *fp2 = acessLine(fp, a);
+            do{
+            ch[i]=fgetc(fp2);
+            i++;
+        }while(ch[i]!=10);
+        printf("%s", ch);
+        i=0;
+            PrintNo(head->Direita, nome_arquivo,fp);}
+            fclose(fp2);
+}
+
+
+void liberal_geral(No* head){
+    if (head->Esquerda==NULL && head->Direita==NULL){
+       free(head);
+        }else if(head->Esquerda!=NULL){
+            liberal_geral(head->Esquerda);
+            free(head->Esquerda);
+        }else {
+            liberal_geral(head->Direita);
+            free(head->Direita);}
 }
 
 
@@ -57,7 +110,7 @@ int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver
 
 No* tree(No *A, int Line, char Key[100]){
         if(A!=NULL){
-            if(alfabeto(Key, A->Esquerda) == 0){
+            if(alfabeto(Key, A->Campo_Chave) == 0){
                     tree(A->Esquerda, Line, Key);
 
             }else{tree(A->Direita, Line, Key);}
@@ -74,52 +127,55 @@ No* tree(No *A, int Line, char Key[100]){
 
 int main() {
    // int count =0;
-   // FILE *pt
-   //char arquivo[26]
-   //scanf(arquivo)
-   // ptr = fopen(arquivo, "r");
-    //if (ptr == NULL) {
-     //   printf("no such file.");
-      //  return 0;
-    //}
-    char Country[100], Region[100], Sigla[10];
-  // char str1[100] = "This is ", str2[100] = "programiz.com";
+   FILE *ptr, *ptr2;
+   No *Teste = NULL;
+   No *B = NULL;
+   int linha=1;
+   int i=0;
+   char ch=0;
+   char Arquivo[30];
+   char busca[100];
+   char concatenada[100];
+   char Country[100], Region[100], Sigla[10], str[50];
+   long int A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,A19,A20,A21,A22,A23,A24,A25,A26,A27,A28,A29,A30,A31;
+do{
+   printf("digite a opcao desejada\n");
+   printf("1 - Para Carrregar o Arquivo\n");
+   printf("2 - Emitir o Relatorio\n");
+   printf("3 - Sair \n");
+   scanf("%d",&i);
+   switch(i){
+    case 1:
+        printf("digite o nome do arquivo de entrada com a extensao\n");
+        scanf("%s",Arquivo);
+        ptr=fopen(Arquivo,"r");
+            if (ptr == NULL) {
+                printf("no such file.\n");
+            break;
+            }else{
+                printf("O arquivo foi aberto\n");
+            }
+            do{   printf("estou aqui\n");
+                fscanf(ptr,"%s%s%s%s%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld",
+                       Country,Sigla,Region,str,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,A19,A20,A21,A22,A23,
+                       A24,A25,A26,A27,A28,A29,A30,A31);
+                strcat(Country, Region);
+                Teste = tree(Teste, linha, Country);
+                printf("estou aqui\n");
+                linha++;
 
-   // concatenates str1 and str2
-   // the resultant string is stored in str1.
-   //strcat(str1, str2);
-   /*
-   fscanf(%s%s%s,country, sigla,region);
-   strcat(country, region);
-   tree(pointeiro_para a arvore, linha_do_novo_no, campo_chave)
 
-   */
 
-  // printf("%s\n", str1);
-  // printf("%s", str2);
-
- // while(count != 215){
-  //  fscanf(ptr,"%s %s %s", country, sigla, region);
-
-  //}
-
-    int a;
-
-    strcpy(Country, "Brazil");
-    strcpy(Region, "Belarus");
-    a = alfabeto(Region, Country);
-    printf("%d\n", a);
-    printf("%s\n", Country);
-    printf("%s\n", Region);
-
-    No *Teste = NULL;
-    int Linha =15;
-    Teste = tree(Teste, 15, "teste");
-    printf("saiu da function\n");
-    printf("%d\n", Teste->Linha);
-    printf("%s\n", Teste->Campo_Chave);
-    free(Teste);
-    /*vai ter que rodar um laço acessando cada no e dando um free nele*/
-
+            }while(ptr!=EOF);
+            ptr=fopen(Arquivo,"r");
+        break;
+    case 2:
+        PrintNo(Teste,Arquivo,ptr);
+        break;
+    case 3:
+        liberal_geral(Teste);
+        fclose(ptr);
+        break;
+   }}while(i!=3);
    return 0;
 }
