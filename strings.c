@@ -31,7 +31,7 @@ void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz, 
     fp2 = fopen(nome_arquivo,"r");
     char ch[550];
     if (head->Esquerda==NULL && head->Direita==NULL){
-
+        printf("option 1");
         a=head->Linha;
         *fp2 = acessLine(fp, a);
         do{
@@ -42,6 +42,7 @@ void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz, 
         i=0;
         fclose(fp2);
         }else if(head->Esquerda!=NULL){
+            printf("option 2");
             PrintNo(head->Esquerda, nome_arquivo, fp);
             a=head->Esquerda->Linha;
             *fp2 = acessLine(fp, a);
@@ -53,6 +54,7 @@ void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz, 
         i=0;
         fclose(fp2);
         }else {
+            printf("option 3");
             a=head->Direita->Linha;
             *fp2 = acessLine(fp, a);
             do{
@@ -109,17 +111,25 @@ int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver
 
 
 No* tree(No *A, int Line, char Key[100]){
+    No *temp = A;
         if(A!=NULL){
             if(alfabeto(Key, A->Campo_Chave) == 0){
+                    printf("almoço\n");
                     tree(A->Esquerda, Line, Key);
 
-            }else{tree(A->Direita, Line, Key);}
+
+            }else{printf("janta\n");
+                tree(A->Direita, Line, Key);}
+
         }else{
+            printf("else\n");
             A = (No*)malloc(sizeof(No));
             A -> Linha = Line;
             strcpy(A -> Campo_Chave, Key);
             A -> Esquerda = NULL;
             A -> Direita = NULL;
+            return A;
+
         }
 
 }
@@ -137,7 +147,6 @@ int main() {
    char busca[100];
    char concatenada[100];
    char Country[100], Region[100], Sigla[10], str[50];
-   long int A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,A19,A20,A21,A22,A23,A24,A25,A26,A27,A28,A29,A30,A31;
 do{
    printf("digite a opcao desejada\n");
    printf("1 - Para Carrregar o Arquivo\n");
