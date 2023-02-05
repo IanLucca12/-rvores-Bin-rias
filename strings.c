@@ -52,7 +52,7 @@ void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz, 
         printf("%s", ch);
         i=0;
         fclose(fp2);
-        }else if(head->Direita!=NULL){
+        }else {
             a=head->Direita->Linha;
             *fp2 = acessLine(fp, a);
             do{
@@ -132,7 +132,7 @@ int main() {
    No *B = NULL;
    int linha=1;
    int i=0;
-   char ch=0;
+   char ch;
    char Arquivo[30];
    char busca[100];
    char concatenada[100];
@@ -145,7 +145,7 @@ do{
    printf("3 - Sair \n");
    scanf("%d",&i);
    switch(i){
-    case 1:
+   case 1:
         printf("digite o nome do arquivo de entrada com a extensao\n");
         scanf("%s",Arquivo);
         ptr=fopen(Arquivo,"r");
@@ -156,17 +156,18 @@ do{
                 printf("O arquivo foi aberto\n");
             }
             do{   printf("estou aqui\n");
-                fscanf(ptr,"%s%s%s%s%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld%ld",
-                       Country,Sigla,Region,str,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15,A16,A17,A18,A19,A20,A21,A22,A23,
-                       A24,A25,A26,A27,A28,A29,A30,A31);
+                fscanf(ptr,"%s%s%s",Country, Sigla,Region);
                 strcat(Country, Region);
                 Teste = tree(Teste, linha, Country);
-                printf("estou aqui\n");
                 linha++;
+                fclose(ptr);
+                ptr=fopen(Arquivo,"r");
+                *ptr=acessLine(ptr,linha);
+                ch = fgetc(ptr);
+                printf("%d", linha);
 
 
-
-            }while(ptr!=EOF);
+            }while(linha!=216);
             ptr=fopen(Arquivo,"r");
         break;
     case 2:
