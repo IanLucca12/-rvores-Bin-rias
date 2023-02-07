@@ -28,18 +28,21 @@ void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz,
     int a=1;
     int i=0;
     FILE *fp2;
+    FILE *copy;
+    copy = fopen("Copia.csv","w");
     fp2 = fopen(nome_arquivo,"r");
     char ch[550];
     if (head->Esquerda==NULL && head->Direita==NULL){
         printf("option 1");
         a=head->Linha;
         *fp2 = acessLine(fp, a);
-            do{
-                ch[i]=fgetc(fp2);
-                i++;
-            }while(ch[i]!=10);
-        printf("%s", ch);
+        do{
+            ch[i]=fgetc(fp2);
+            i++;
+        }while(ch[i]!=10);
+        fprintf(copy,"%s", ch);
         i=0;
+        fclose(copy);
         fclose(fp2);
         }else if(head->Esquerda!=NULL){
             printf("option 2");
@@ -47,24 +50,26 @@ void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz,
             a=head->Esquerda->Linha;
             *fp2 = acessLine(fp, a);
             do{
-                ch[i]=fgetc(fp2);
-                i++;
-            }while(ch[i]!=10);
-        printf("%s", ch);
+            ch[i]=fgetc(fp2);
+            i++;
+        }while(ch[i]!=10);
+        fprintf(copy,"%s", ch);
         i=0;
         fclose(fp2);
+        fclose(copy);
         }else {
             printf("option 3");
             a=head->Direita->Linha;
             *fp2 = acessLine(fp, a);
             do{
-                ch[i]=fgetc(fp2);
-                i++;
-            }while(ch[i]!=10);
-        printf("%s", ch);
+            ch[i]=fgetc(fp2);
+            i++;
+        }while(ch[i]!=10);
+        fprintf(copy,"%s", ch);
         i=0;
-            PrintNo(head->Direita, nome_arquivo,fp);}
-            fclose(fp2);
+        PrintNo(head->Direita, nome_arquivo,fp);}
+        fclose(fp2);
+        fclose(copy);
 }
 
 
@@ -109,24 +114,21 @@ int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver
 }
 
 
-
 No* tree(No *A, int Line, char Key[100]){
-        if(A==NULL){
-            printf("else\n");
-            A = (No*)malloc(sizeof(No));
-            A -> Linha = Line;
-            strcpy(A -> Campo_Chave, Key);
-            A -> Esquerda = NULL;
-            A -> Direita = NULL;
-        }else if(A!=NULL){
-            if(alfabeto(Key, A->Campo_Chave) == 0){
-                    printf("almoço\n");
-                    tree(A->Esquerda, Line, Key);
-            }else{
-                printf("janta\n");
-                tree(A->Direita, Line, Key);
-            }
+    if(A == NULL){
+        A=(No*)malloc(sizeof(No));
+        A->Linha = Line;
+        strcpy(A -> Campo_Chave, Key);
+        A->Esquerda = NULL;
+        A->Direita = NULL;
+    }else{
+        if(alfabeto(Key, A->Campo_Chave) == 0){
+            A->Esquerda = tree(A->Esquerda,Line,Key);
+        }else{
+            A->Direita = tree(A->Direita,Line,Key);
         }
+    }
+    return A;
 }
 
 
@@ -136,7 +138,6 @@ int main() {
    No *Teste = NULL;
    No *B = NULL;
    int linha=1;
-   int linha2=1;
    int i=0;
    char ch;
    char Arquivo[30];
@@ -160,7 +161,7 @@ do{
             }else{
                 printf("O arquivo foi aberto\n");
             }
-            do{
+            do{   printf("estou aqui\n");
                 fscanf(ptr,"%s%s%s",Country, Sigla,Region);
                 strcat(Country, Region);
                 Teste = tree(Teste, linha, Country);
@@ -176,10 +177,7 @@ do{
             ptr=fopen(Arquivo,"r");
         break;
     case 2:
-        do{
-            PrintNo(Teste,Arquivo,ptr);
-            linha2=linha2+1;
-        }while(linha2!=216);
+        PrintNo(Teste,Arquivo,ptr);
         break;
     case 3:
         liberal_geral(Teste);
