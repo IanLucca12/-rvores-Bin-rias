@@ -27,44 +27,82 @@ FILE acessLine(FILE *fp, int line){  /* the first argument is a file pointer tha
 void PrintNo(No* head, char nome_arquivo[30], FILE *fp){ /*parameters: nó raiz, nome do arquivo, ponteiro pro começo do arquivo*/
     int a=1;
     int i=0;
-    FILE *fp2;
+    FILE *fp2, *fp3;
+    FILE *copy;
+    copy = fopen("Copia.csv","w");
     fp2 = fopen(nome_arquivo,"r");
-    char ch[550];
+    char ch;
     if (head->Esquerda==NULL && head->Direita==NULL){
         printf("option 1");
         a=head->Linha;
-        *fp2 = acessLine(fp, a);
-        do{
-            ch[i]=fgetc(fp2);
-            i++;
-        }while(ch[i]!=10);
-        printf("%s", ch);
-        i=0;
-        fclose(fp2);
-        }else if(head->Esquerda!=NULL){
-            printf("option 2");
+        fp2 = fopen(nome_arquivo,"r");
+        *fp2 = acessLine(fp2, a);
+
+        while ( 1 ){
+        ch = fgetc(fp2);
+        //printf("loop1");
+        if(ch==10 ||ch==EOF){
+            //printf("saiu1\n");
+            break;}
+        printf("%c",ch);}
+
+        printf("\n");
+
+        }else if(head->Esquerda!=NULL && head->Direita==NULL){
+           printf("option 2");
             PrintNo(head->Esquerda, nome_arquivo, fp);
-            a=head->Esquerda->Linha;
-            *fp2 = acessLine(fp, a);
-            do{
-            ch[i]=fgetc(fp2);
-            i++;
-        }while(ch[i]!=10);
-        printf("%s", ch);
-        i=0;
-        fclose(fp2);
-        }else {
+            a=head->Linha;
+            fp2 = fopen(nome_arquivo,"r");
+            *fp2 = acessLine(fp2, a);
+
+            while ( 1 ){
+            ch = fgetc(fp2);
+            //printf("loop2");
+            if(ch==10 ||ch==EOF){
+                //printf("saiu2\n");
+                break;}
+                printf("%c",ch);}
+
+                printf("\n");;
+        }else if(head->Esquerda==NULL && head->Direita!=NULL){
             printf("option 3");
-            a=head->Direita->Linha;
-            *fp2 = acessLine(fp, a);
-            do{
-            ch[i]=fgetc(fp2);
-            i++;
-        }while(ch[i]!=10);
-        printf("%s", ch);
-        i=0;
-            PrintNo(head->Direita, nome_arquivo,fp);}
-            fclose(fp2);
+            a=head->Linha;
+            fp2 = fopen(nome_arquivo,"r");
+            *fp2 = acessLine(fp2, a);
+
+            while ( 1 ){
+                ch = fgetc(fp2);
+               // printf("loop3");
+                if(ch==10 ||ch==EOF){
+                   // printf("saiu3\n");
+                    break;}
+                    printf("%c",ch);}
+
+                    printf("\n");
+        PrintNo(head->Direita, nome_arquivo,fp);}
+
+        else if(head->Esquerda!=NULL && head->Direita!=NULL){
+
+        printf("option 4");
+        PrintNo(head->Esquerda, nome_arquivo,fp);
+        a=head->Linha;
+            fp2 = fopen(nome_arquivo,"r");
+            *fp2 = acessLine(fp2, a);
+
+            while ( 1 ){
+            ch = fgetc(fp2);
+            //printf("(%c)",ch);
+           // printf("loop4");
+            if(ch==10 ||ch==EOF){
+            //printf("saiu4\n");
+            break;}
+            printf("%c",ch);}
+            printf("\n");
+        PrintNo(head->Direita, nome_arquivo,fp);
+        }
+
+        fclose(fp2);
+        fclose(copy);
 }
 
 
@@ -109,29 +147,21 @@ int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver
 }
 
 
-
 No* tree(No *A, int Line, char Key[100]){
-    No *temp = A;
-        if(A!=NULL){
-            if(alfabeto(Key, A->Campo_Chave) == 0){
-                    printf("almoço\n");
-                    A->Esquerda = tree(A->Esquerda, Line, Key);
-
-
-            }else{printf("janta\n");
-                A->Direita = tree(A->Direita, Line, Key);}
-
+    if(A == NULL){
+        A=(No*)malloc(sizeof(No));
+        A->Linha = Line;
+        strcpy(A -> Campo_Chave, Key);
+            A->Esquerda = NULL;
+        A->Direita = NULL;
+    }else{
+        if(alfabeto(Key, A->Campo_Chave) == 0){
+            A->Esquerda = tree(A->Esquerda,Line,Key);
         }else{
-            printf("else\n");
-            A = (No*)malloc(sizeof(No));
-            A -> Linha = Line;
-            strcpy(A -> Campo_Chave, Key);
-            A -> Esquerda = NULL;
-            A -> Direita = NULL;
-
-
+            A->Direita = tree(A->Direita,Line,Key);
         }
-return A;
+    }
+    return A;
 }
 
 
@@ -177,6 +207,7 @@ do{
 
 
             }while(linha!=216);
+
             ptr=fopen(Arquivo,"r");
         break;
     case 2:
