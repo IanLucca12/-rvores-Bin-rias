@@ -118,7 +118,7 @@ void liberal_geral(No* head){
 }
 
 
-int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver depois no alfabeto
+/*int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver depois no alfabeto
         int i = 0;                                  // caso contrario retorna 0
         int a = 0;
         int b = 0;
@@ -144,7 +144,7 @@ int alfabeto(char str1[100], char str2[100]){      //retorna 1 se a str1 estiver
         }else{a++;}
 
         }return 0;
-}
+}função n está mais sendo usada*/
 
 
 No* tree(No *A, int Line, char Key[100]){
@@ -178,7 +178,7 @@ int main() {
    char concatenada[100];
    char Country[100], Region[100], Sigla[10], str[50];
 do{
-   printf("digite a opcao desejada\n");
+   printf("\nDigite a opcao desejada\n");
    printf("1 - Para Carrregar o Arquivo\n");
    printf("2 - Emitir o Relatorio\n");
    printf("3 - Sair \n");
@@ -194,7 +194,7 @@ do{
             }else{
                 printf("O arquivo foi aberto\n");
             }
-            do{   printf("estou aqui\n");
+            do{
                 fscanf(ptr,"%s%s%s",Country, Sigla,Region);
                 strcat(Country, Region);
                 Teste = tree(Teste, linha, Country);
@@ -203,20 +203,24 @@ do{
                 ptr=fopen(Arquivo,"r");
                 *ptr=acessLine(ptr,linha);
                 ch = fgetc(ptr);
-                printf("%d", linha);
+                printf("%d\n", linha);
 
 
-            }while(linha!=216);
+            }while(linha!=168);
 
             ptr=fopen(Arquivo,"r");
         break;
     case 2:
-        PrintNo(Teste,Arquivo,ptr);
+        if(ptr!=NULL){
+        PrintNo(Teste,Arquivo,ptr);}
+        else{printf("Arquivo Vazio!\n");}
         break;
     case 3:
         liberal_geral(Teste);
         fclose(ptr);
         break;
+    default:
+        printf("opção incorreta\n");
    }}while(i!=3);
    return 0;
 }
